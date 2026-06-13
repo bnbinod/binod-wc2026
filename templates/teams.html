@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="row">
+
+    <!-- _id	name_en	name_fa	flag	fifa_code	iso2	groups	id -->
+    <div class="col-lg-12">
+        <table class="table">
+            <thead>
+                <th>ID</th>
+                <th>Name</th>
+                <th>FIFA Code</th>
+                <th>Group</th>
+
+            </thead>
+            <tbody>
+                {% for i in rows %}
+                <tr>
+                    <td>{{ i.id }}</td>
+                    <td><img src="{{ i.flag }}" alt="{{ i.name_en }}" width="30" height="20"> {{ i.name_en }}</td>
+                    <td>{{ i.fifa_code }}</td>
+                    <td>{{ i.groups }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

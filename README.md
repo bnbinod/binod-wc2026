@@ -1,19 +1,27 @@
-# 🎬 Movies dataset template
+# Python SQLite
+Simple Python Application For CRUD operations through SQLite.
+### Git Clone 
+``` git clone https://github.com/maheshkareeya/python-sqlite.git```
+### Change Directory
+```cd python-sqlite```
+### Note : Install Python for your system with pip
+```pip install virtualenv```
 
-A simple Streamlit app showing movie data from [The Movie Database (TMDB)](https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata). 
+```source bin/activate```
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://movies-dataset-template.streamlit.app/)
+```pip install flask flask-sqlalchemy```
+### Export 
+```export FLASK_APP=app.py```
 
-### How to run it on your own machine
+```export FLASK_DEBUG=True```
 
-1. Install the requirements
+``` flask run ``` 
 
-   ```
-   $ pip install -r requirements.txt
-   ```
+### Install Dependences 
+``` pip install```
+### Start Server
+```flask run```
 
-2. Run the app
 
-   ```
-   $ streamlit run streamlit_app.py
-   ```
+### Demo
+![alt text](https://user-images.githubusercontent.com/16520789/71201563-54cce200-22c0-11ea-97c2-5dd89637ca5a.png "Node File Explorer")

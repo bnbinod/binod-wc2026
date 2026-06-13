@@ -1,0 +1,43 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+  {% if data %}
+    {% set first_item = data[0] %}
+    {% if first_item is mapping %}
+      <h2>Showing: {{ title }}</h2>
+
+      <table class='table'>
+        <thead>
+          <tr>
+            <!-- <th>#</th> -->
+            {% for column in first_item.keys() %}
+              <th>{{ column }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in data %}
+            <tr>
+              <!-- <td>{{ loop.index }}</td> -->
+              {% for column in first_item.keys() %}
+                {% set cell = row[column] %}
+                {% set text = cell|string %}
+                {% if text|length > 40 %}
+                  <td><span title="{{ text|e }}">{{ text[:40]|e }}...</span></td>
+                {% else %}
+                  <td><span title="{{ text|e }}">{{ text|e }}</span></td>
+                {% endif %}
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>Provided dataset is not a list of dictionaries.</p>
+    {% endif %}
+  {% else %}
+    <p>No data available.</p>
+  {% endif %}
+    </div>
+{% endblock %}
