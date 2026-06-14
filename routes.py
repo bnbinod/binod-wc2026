@@ -58,6 +58,7 @@ def get_predictions():
     return render_template('list_data.html', data=dict_results, title="Staff's Predictions")
 
 
+@main_bp.route('/', methods=['GET'])
 @main_bp.route('/leaderboard', methods=['GET'])
 def pivot():
     rows = Prediction.query.with_entities(
