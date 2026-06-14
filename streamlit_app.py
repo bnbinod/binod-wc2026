@@ -1,11 +1,9 @@
 import requests
 import streamlit as st
-# import pandas as pd
-# import os
-# from flask import Flask
+import os
+from flask import Flask
 
-# from models import db
-# from routes import main_bp
+from models import db, Team
 
 
 # Set the title and favicon that appear in the Browser's tab bar.
@@ -17,37 +15,23 @@ st.set_page_config(
 
 @st.cache_data
 def get_team_codes():
-    url = "https://worldcup26.ir/get/teams"
-    try:
-        resp = requests.get(url, timeout=5)
-        resp.raise_for_status()
-        payload = resp.json()
-    except Exception:
-        payload = {}
-
-    if isinstance(payload, list):
-        dict_results = payload
-    elif isinstance(payload, dict):
-        if "teams" in payload and isinstance(payload["teams"], list):
-            dict_results = payload["teams"]
-        elif "data" in payload and isinstance(payload["data"], list):
-            dict_results = payload["data"]
-        else:
-            dict_results = [payload]
-    else:
-        dict_results = []
+    # Use the application's SQLite database for team codes.
+    # Ensure DB is initialized and use an application context when querying.
+    db_path = os.path.join(os.path.dirname(__file__), "mydb.db")
+    app = Flask(__name__)
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    db.init_app(app)
 
     codes = {}
-    for row in dict_results:
-        team_id = row.get('id') or row.get('team_id') or row.get('teamId')
-        iso_code = row.get('fifa_code') or row.get('iso_code') or row.get('iso')
-        if team_id is None:
-            continue
-        try:
-            team_id = int(team_id)
-        except Exception:
-            continue
-        codes[team_id] = iso_code
+    with app.app_context():
+        teams = Team.query.all()
+        for team in teams:
+            try:
+                codes[int(team.id)] = team.fifa_code
+            except Exception:
+                # skip malformed entries
+                continue
 
     return codes
 
@@ -102,8 +86,9 @@ def get_games():
 
     return results
 
-game_outcomes = get_games()
+# game_outcomes = get_games()
 
+game_outcomes = get_team_codes()
 st.dataframe(game_outcomes, use_container_width=True, hide_index=True)
 
 
